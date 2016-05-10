@@ -37,24 +37,37 @@ public class ColorPickerDialogBuilder {
 	private int defaultMargin = 0;
 	private Integer[] initialColor = new Integer[]{null, null, null, null, null};
 
-	private ColorPickerDialogBuilder(Context context) {
-		builder = new AlertDialog.Builder(context);
-		pickerContainer = new LinearLayout(context);
-		pickerContainer.setOrientation(LinearLayout.VERTICAL);
-		pickerContainer.setGravity(Gravity.CENTER_HORIZONTAL);
-		defaultMargin = getDimensionAsPx(context, R.dimen.default_slider_margin);
-
-		LinearLayout.LayoutParams layoutParamsForColorPickerView = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
-		layoutParamsForColorPickerView.weight = 1;
-		colorPickerView = new ColorPickerView(context);
-
-		pickerContainer.addView(colorPickerView, layoutParamsForColorPickerView);
-
-		builder.setView(pickerContainer);
+	private ColorPickerDialogBuilder(Context context, int style) {
+		builder = new AlertDialog.Builder(context, style);
+		init(context);
 	}
 
-	public static ColorPickerDialogBuilder with(Context context) {
-		return new ColorPickerDialogBuilder(context);
+    private ColorPickerDialogBuilder(Context context) {
+        builder = new AlertDialog.Builder(context);
+        init(context);
+    }
+
+    private void init(Context context) {
+        pickerContainer = new LinearLayout(context);
+        pickerContainer.setOrientation(LinearLayout.VERTICAL);
+        pickerContainer.setGravity(Gravity.CENTER_HORIZONTAL);
+        defaultMargin = getDimensionAsPx(context, R.dimen.default_slider_margin);
+
+        LinearLayout.LayoutParams layoutParamsForColorPickerView = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0);
+        layoutParamsForColorPickerView.weight = 1;
+        colorPickerView = new ColorPickerView(context);
+
+        pickerContainer.addView(colorPickerView, layoutParamsForColorPickerView);
+
+        builder.setView(pickerContainer);
+    }
+
+    public static ColorPickerDialogBuilder with(Context context) {
+        return new ColorPickerDialogBuilder(context);
+    }
+
+	public static ColorPickerDialogBuilder with(Context context, int style) {
+		return new ColorPickerDialogBuilder(context, style);
 	}
 
 	public ColorPickerDialogBuilder setTitle(String title) {
@@ -105,6 +118,11 @@ public class ColorPickerDialogBuilder {
 
 	public ColorPickerDialogBuilder setNegativeButton(CharSequence text, DialogInterface.OnClickListener onClickListener) {
 		builder.setNegativeButton(text, onClickListener);
+		return this;
+	}
+
+	public ColorPickerDialogBuilder setNeutralButton(CharSequence text, DialogInterface.OnClickListener onClickListener) {
+		builder.setNeutralButton(text, onClickListener);
 		return this;
 	}
 
